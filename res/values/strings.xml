@@ -4,6 +4,6 @@
     <string name="app_name">文件浏览器</string>
     <string name="is_root_dir">已经是根目录.</string>
     <string name="is_file">文件没有子目录.</string>
-    
-    
+    <string name="menu_img_show">查看图片1</string>
+    <string name="menu_img_view">查看图片2</string>
 </resources>

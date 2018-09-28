@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,12 +22,13 @@ import android.widget.Toast;
 
 public class FSExplorer extends Activity implements OnItemClickListener {
 	private static final String TAG = "FSExplorer";
-	//private static final int IM_PARENT = Menu.FIRST + 1;
-	//private static final int IM_BACK = IM_PARENT + 1;
+	private static final int IMG_SHOW = Menu.FIRST + 1;
+	private static final int IMG_VIEW = IMG_SHOW + 1;
  
 	ListView itemlist = null;
 	String path = Environment.getDataDirectory().getPath();
 	List<Map<String, Object>> list;
+	private Menu menu;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,37 @@ public class FSExplorer extends Activity implements OnItemClickListener {
 		}
 
 	}
-
- 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, IMG_SHOW, 0, R.string.menu_img_show);
+		menu.add(0, IMG_VIEW, 0, R.string.menu_img_view);
+		return true;
+	}
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    	File dir = new File(path);
+    	String[] images = dir.list(new ImageNameFilter());
+    	if(null != images && images.length>0){
+			switch (item.getItemId()) {
+			case IMG_SHOW:
+				Intent i = new Intent(this, ImageShowActivity.class);
+				i.putExtra("path", path);
+				startActivity(i);
+				return true;
+			case IMG_VIEW:
+				i = new Intent(this, GridViewActivity.class);
+				i.putExtra("path", path);
+				startActivity(i);
+				return true;
+			}
+			return super.onMenuItemSelected(featureId, item);
+    	}else{
+			Toast.makeText(FSExplorer.this,
+					"此目录没有图片",
+					Toast.LENGTH_SHORT).show();   		
+    		return false;
+    	}
+	}
 
 }
