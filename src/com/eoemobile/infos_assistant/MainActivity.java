@@ -1,5 +1,6 @@
 package com.eoemobile.infos_assistant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,14 +50,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		map.put("desc", "浏览查看文件系统.");
 		map.put("img", R.drawable.file_explorer);
 		list.add(map);
-		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-			map = new HashMap<String, Object>();
-			map.put("name", "外部sdcard存储");
-			map.put("desc", "浏览查看文件系统.");
-			map.put("img", R.drawable.file_explorer);
-			list.add(map);
-		}
-		
+		String extSdcardPath = System.getenv("SECONDARY_STORAGE");
+		if(null != extSdcardPath){
+			String[] files = new File(extSdcardPath).list();
+			if(null != files && files.length>0){
+				//if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+					map = new HashMap<String, Object>();
+					map.put("name", "外部sdcard存储");
+					map.put("desc", "浏览查看文件系统.");
+					map.put("img", R.drawable.file_explorer);
+					list.add(map);
+				//}				
+			}
+		}		
 		return list;
 	}
 

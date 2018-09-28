@@ -26,9 +26,9 @@ public class FSExplorer extends Activity implements OnItemClickListener {
 	private static final int IMG_VIEW = IMG_SHOW + 1;
  
 	ListView itemlist = null;
-	String path = Environment.getDataDirectory().getPath();
+	String path = Environment.getExternalStorageDirectory().getPath();//"/sdcard";
 	List<Map<String, Object>> list;
-	private Menu menu;
+	//private Menu menu;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class FSExplorer extends Activity implements OnItemClickListener {
 		if (extras != null) {
 			int position = extras.getInt("position");
 			if(position==1){
-				path = Environment.getExternalStorageDirectory().getPath();//"/sdcard";
+				path = System.getenv("SECONDARY_STORAGE");
 				Log.i(TAG, "path="+path);
 			}
 		}
